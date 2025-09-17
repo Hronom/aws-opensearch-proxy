@@ -1,0 +1,19 @@
+services:
+  aws-opensearch-proxy:
+    container_name: aws-opensearch-proxy
+    platform: linux/amd64
+    env_file: .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command:
+      - -listen=0.0.0.0:9201
+      - -timeout=60
+      - -sso
+    environment:
+      ENDPOINT: ${ENDPOINT}
+      AWS_PROFILE: ${AWS_PROFILE}
+    ports:
+      - "9201:9201"
+    volumes:
+      - $HOME/.aws:/root/.aws:cached
